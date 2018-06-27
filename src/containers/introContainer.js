@@ -1,13 +1,20 @@
 import { connect } from 'react-redux'
-import { onAction } from '../actions'
+import { navigateToCollections,
+         navigateToSignIn,
+         navigateToSignUp } from '../actions'
+         
 import Intro from '../components/intro'
 
 const mapStateToProps = (state, ownProps) => ({
-  text: 'Action'
+  signUpButtonText: 'Join Club',
+  signInButtonText: 'Sign In',
+  shopButtonText: 'View Collections'
 })
 
 const mapDispatchToProps = {
-  onClick: (onAction)
+  onViewCollectionsPress: navigateToCollections,
+  onSignInPress: navigateToSignIn,
+  onSignUpPress: navigateToSignUp
 }
 
 const IntroContainer = connect(

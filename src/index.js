@@ -1,66 +1,74 @@
 /* eslint-disable import/no-unresolved */
-import firebaseConfig from './config/firebaseKeys.json';
-import firebase from 'firebase';
-import rootReducer from './reducers';
+import firebaseConfig from './config/firebaseKeys.json'
+import firebase from 'firebase'
+import rootReducer from './reducers'
 
-import { createStackNavigator } from 'react-navigation';
+import React, { Component } from 'react'
+import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunkMiddleware from 'redux-thunk'
 
-import { createStore, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-
-import React, { Component } from 'react';
-import {
-  Text,
-  View
-} from 'react-native';
-
-import Intro from './containers/introContainer'
-import SignUp from './components/signUp'
-
-import { Provider } from 'react-redux';
+import AppLoadingScreen from './containers/appLoadingContainer'
+import IntroScreen from './containers/introContainer'
+import SignUpScreen from './components/signUp'
+import SignInScreen from './components/signIn'
 
 const store = createStore(
     rootReducer,
     applyMiddleware(
         thunkMiddleware
     )
-);
+)
 
-const RootStack = createStackNavigator(
-  {
-    Intro: Intro,
-    SignUp: SignUp,
-  },
-  {
-    initialRouteName: 'Intro',
-  }
-);
+const AppStack = createStackNavigator({
+  IntroScreen: IntroScreen,
+  SignUpScreen: SignUpScreen,
+}, {
+  initialRouteName: 'IntroScreen',
+})
+
+const AuthStack = createStackNavigator({
+  IntroScreen: IntroScreen,
+  SignUpScreen: SignUpScreen,
+  SignInScreen: SignInScreen,
+}, {
+  initialRouteName: 'SignInScreen',
+})
+
+const RootStack = createSwitchNavigator({
+  AppLoadingScreen: AppLoadingScreen,
+  Authentication: AuthStack,
+  App: AppStack
+}, {
+  initialRouteName: 'AppLoadingScreen',
+})
 
 class App extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
+    this.onAuthStateChanged = this.onAuthStateChanged.bind(this)
 
-    this.state = { loaded: false };
+    this.state = { loaded: false }
   }
 
   componentDidMount() {
-    firebase.initializeApp(firebaseConfig);
-    firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
+    // firebase.initializeApp(firebaseConfig)
+    // firebase.auth().onAuthStateChanged(this.onAuthStateChanged)
   }
 
   onAuthStateChanged (user) {
     if (user !== null) {
 
           // firebase.auth().onAuthStateChanged((user) => {
-          //   this.setState({ loaded: true });
+          //   this.setState({ loaded: true })
           //
           //   if (user) {
-          //     // store.dispatch({ type: SIGN_IN_SUCCESS, payload: user });
+          //     // store.dispatch({ type: SIGN_IN_SUCCESS, payload: user })
           //   }
-          // });
+          // })
     }
 
   }
@@ -70,8 +78,8 @@ class App extends Component {
       <Provider store={store}>
         <RootStack />
       </Provider>
-    );
+    )
   }
 }
 
-export default App;
+export default App

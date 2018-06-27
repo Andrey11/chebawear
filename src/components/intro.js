@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Text,
   View,
   Button,
   StyleSheet,
-  TouchableOpacity } from 'react-native';
+  TouchableOpacity } from 'react-native'
 
-import BackgroundImage from './backgroundImage';
+import BackgroundImage from './backgroundImage'
 
 export default class Intro extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   componentWillMount() {
@@ -24,12 +24,12 @@ export default class Intro extends Component {
       <BackgroundImage>
         <Text style={localstyles.text_color}>INTRO</Text>
         <Button
-          title={this.props.text}
+          title={this.props.shopButtonText}
           // onPress={() => this.props.navigation.navigate('SignUp')}
-          onPress={() => this.props.onClick(this.props.navigation)}
+          onPress={() => this.props.onViewCollectionsPress(this.props.navigation)}
         />
       </BackgroundImage>
-    );
+    )
   }
 }
 
@@ -58,10 +58,13 @@ const localstyles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-});
+})
 
 Intro.propTypes = {
-  text: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  signUpButtonText: PropTypes.string.isRequired,
+  signInButtonText: PropTypes.string.isRequired,
+  shopButtonText: PropTypes.string.isRequired,
+  onViewCollectionsPress: PropTypes.func.isRequired,
+  onSignInPress: PropTypes.func.isRequired,
+  onSignUpPress: PropTypes.func.isRequired,
 }
-// Signup = reduxForm({ form: 'signup', validate })(Signup);
